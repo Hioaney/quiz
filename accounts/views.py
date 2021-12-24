@@ -30,6 +30,11 @@ class UserView(APIView):
             return Response(serializer.data)
         return Response({'detail': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
+    def delete(self, request, id):
+        spending = get_object_or_404(User, id=id, owner=self.request.user)
+        spending.delete()
+        return Response({'detail': 'success'}, status=status.HTTP_204_NO_CONTENT)
+
 class TopUsersView(APIView):
 
     def get(self, request):

@@ -33,6 +33,11 @@ class QuizView(APIView):
             return Response(serializer.data)
         return Response({'detail': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
 
+    def delete(self, request, id):
+        spending = get_object_or_404(Quiz, id=id, author=self.request.user)
+        spending.delete()
+        return Response({'detail': 'success'}, status=status.HTTP_204_NO_CONTENT)
+
 class RandomQuestion(APIView):
 
     def get(self, request, format=None, **kwargs):
@@ -61,6 +66,11 @@ class QuizQuestion(APIView):
             serializer = QuestionSerializer(instance=quiz_question)
             return Response(serializer.data)
         return Response({'detail': serializer.errors}, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, id):
+        spending = get_object_or_404(Question, id=id, owner=self.request.user)
+        spending.delete()
+        return Response({'detail': 'success'}, status=status.HTTP_204_NO_CONTENT)
 
 
 
